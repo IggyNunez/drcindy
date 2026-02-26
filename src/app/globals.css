@@ -1,26 +1,259 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-gold: #FFC300;
+  --color-gold-dark: #CBA465;
+  --color-gold-light: #FFD740;
+  --color-dark: #010101;
+  --color-dark-bg: #010101;
+  --color-cream: #FFFDF0;
+  --font-sans: var(--font-montserrat);
+  --font-body: var(--font-montserrat);
+  --font-heading: var(--font-josefin);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  scroll-behavior: smooth;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: #ffffff;
+  color: #010101;
+  font-family: var(--font-montserrat), 'Montserrat', sans-serif;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
 }
+
+/* Gold glitter/shimmer animation */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* Light text shadow for hero title */
+.hero-title-shadow {
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+.hero-content-fade {
+  background:
+    linear-gradient(to bottom, transparent 0%, rgba(0,0,0,0.5) 15%, rgba(0,0,0,0.4) 50%, rgba(0,0,0,0.5) 85%, transparent 100%);
+}
+
+.gold-shimmer-text {
+  background:
+    repeating-linear-gradient(
+      180deg,
+      rgba(255,255,255,0.06) 0px,
+      rgba(0,0,0,0.04) 1px,
+      rgba(255,255,255,0.03) 2px,
+      transparent 3px,
+      rgba(0,0,0,0.03) 5px
+    ),
+    linear-gradient(
+      180deg,
+      rgba(191,149,63,0.3) 0%,
+      rgba(252,246,186,0.15) 30%,
+      transparent 50%,
+      rgba(252,246,186,0.15) 70%,
+      rgba(191,149,63,0.3) 100%
+    ),
+    linear-gradient(
+      90deg,
+      #E8C45A 0%,
+      #FFF8E1 20%,
+      #FFFFFF 40%,
+      #FFFFFF 60%,
+      #FFF8E1 80%,
+      #E8C45A 100%
+    );
+  background-size: 5px 5px, 100% 100%, 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 8s ease-in-out infinite;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.8)) drop-shadow(0 2px 12px rgba(255, 243, 200, 0.5)) drop-shadow(0 0 30px rgba(255, 255, 255, 0.3));
+}
+
+/* Gold brushed metal text effect */
+.gold-metal-text {
+  background:
+    linear-gradient(
+      180deg,
+      #BF953F 0%,
+      #FCF6BA 20%,
+      #B38728 35%,
+      #FBF5B7 50%,
+      #AA771C 65%,
+      #FCF6BA 80%,
+      #BF953F 100%
+    );
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.5)) drop-shadow(0 0 20px rgba(255, 195, 0, 0.15));
+}
+
+/* Logo shine sweep animation */
+@keyframes logoShine {
+  0%, 100% { background-position: 200% center; }
+  50% { background-position: -200% center; }
+}
+
+.logo-shine {
+  background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.3) 42%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.3) 58%, transparent 65%);
+  background-size: 200% 100%;
+  animation: logoShine 4s ease-in-out infinite;
+  -webkit-mask-image: url('/images/cindy-site-logo.svg');
+  mask-image: url('/images/cindy-site-logo.svg');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+.logo-shine-footer {
+  background: linear-gradient(105deg, transparent 35%, rgba(255,255,255,0.3) 42%, rgba(255,255,255,0.6) 50%, rgba(255,255,255,0.3) 58%, transparent 65%);
+  background-size: 200% 100%;
+  animation: logoShine 4s ease-in-out infinite;
+  -webkit-mask-image: url('/images/cindy-site-logo-footer.svg');
+  mask-image: url('/images/cindy-site-logo-footer.svg');
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-position: center;
+  mask-position: center;
+}
+
+/* Gold glow effect for buttons */
+.gold-glow {
+  box-shadow: 0 0 20px rgba(255, 195, 0, 0.3), 0 0 40px rgba(255, 195, 0, 0.1);
+}
+
+.gold-glow:hover {
+  box-shadow: 0 0 25px rgba(255, 195, 0, 0.5), 0 0 50px rgba(255, 195, 0, 0.2);
+}
+
+/* Marquee animation for scrolling logos */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-33.333%); }
+}
+
+.animate-marquee {
+  animation: marquee 25s linear infinite;
+  width: max-content;
+}
+
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Play button sonic wave pulse - gold rings */
+.play-pulse::before,
+.play-pulse::after {
+  content: '';
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 195, 0, 0.4);
+  animation: sonic-pulse 2s ease-out infinite;
+}
+
+.play-pulse::after {
+  animation-delay: 1s;
+}
+
+@keyframes sonic-pulse {
+  0% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: scale(1.6);
+    opacity: 0;
+  }
+}
+
+/* Play button dark resonance wave */
+.play-pulse {
+  box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.4);
+  animation: dark-resonance 2s ease-out infinite;
+}
+
+@keyframes dark-resonance {
+  0% {
+    box-shadow: 0 0 0 0 rgba(0, 0, 0, 0.5), 0 0 0 0 rgba(0, 0, 0, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 15px 10px rgba(0, 0, 0, 0.2), 0 0 30px 20px rgba(0, 0, 0, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 25px 20px rgba(0, 0, 0, 0), 0 0 50px 35px rgba(0, 0, 0, 0);
+  }
+}
+
+/* Gold arc shine sweep - traveling light along the arc */
+@keyframes arcShine {
+  0% { background-position: 200% center; }
+  100% { background-position: -200% center; }
+}
+
+.gold-arc {
+  /* position inherited from element - don't override */
+}
+
+.gold-arc::after {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 35%,
+    rgba(255, 243, 200, 0.5) 42%,
+    rgba(255, 255, 255, 0.8) 50%,
+    rgba(255, 243, 200, 0.5) 58%,
+    transparent 65%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: arcShine 6s ease-in-out infinite;
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  padding: 3px;
+  pointer-events: none;
+}
+
+/* Gold horizontal divider line with shimmer */
+.gold-line-shine {
+  position: relative;
+  overflow: visible;
+}
+
+.gold-line-shine::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    transparent 30%,
+    rgba(255, 255, 255, 0.9) 45%,
+    rgba(255, 243, 200, 1) 50%,
+    rgba(255, 255, 255, 0.9) 55%,
+    transparent 70%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: arcShine 4s ease-in-out infinite;
+  pointer-events: none;
+}
+
+
