@@ -2,7 +2,19 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-export default function AboutDrCindy() {
+interface AboutProps {
+  data?: {
+    heading?: string;
+    subtitle?: string;
+    bodyParagraphs?: string[];
+    calloutQuote?: string;
+    closingParagraph?: string;
+    photo?: string;
+    cta?: { label?: string; href?: string };
+  };
+}
+
+export default function AboutDrCindy({ data }: AboutProps) {
   return (
     <section className="relative bg-white overflow-hidden">
       {/* Gold swirl decoration */}
@@ -30,7 +42,7 @@ export default function AboutDrCindy() {
               className="text-black text-[30px] md:text-[clamp(2.2rem,5vw,60px)] font-semibold leading-[1] uppercase tracking-normal mb-4 md:mb-5"
               style={{ fontFamily: "var(--font-josefin)" }}
             >
-              About Dr. Cindy
+              {data?.heading || "About Dr. Cindy"}
             </motion.h2>
 
             {/* Subtitle */}
@@ -42,7 +54,7 @@ export default function AboutDrCindy() {
               className="text-black font-medium text-[18px] md:text-[28px] leading-[1.25] tracking-[0.02em] mb-8 md:mb-10 text-left"
               style={{ fontFamily: "var(--font-montserrat)" }}
             >
-              I never wanted to be in sales.
+              {data?.subtitle || "I never wanted to be in sales."}
             </motion.p>
 
             {/* Body text */}
@@ -54,12 +66,20 @@ export default function AboutDrCindy() {
               className="space-y-6 text-black text-[16px] md:text-[19px] lg:text-[22px] leading-[1.8] md:leading-[40px] text-left"
               style={{ fontFamily: "var(--font-montserrat)" }}
             >
-              <p>
-                I began my career as a college professor, armed with three degrees in communication and a passion for teaching. But standing in front of bleary-eyed sophomores at 8 a.m., trying to make public speaking sound sexy? That wasn&apos;t it.
-              </p>
-              <p>
-                During the summers, I picked up consulting work. Working with adults turned out to be where I wanted to be. I was helping people who actually wanted to be there. Eventually, I took on a full-time role that I thought was a consulting position. But six months into the job, I was pushed into a sales position, and I was terrified. I thought I was going to get fired because I did not know how to sell, nor did I want to learn. I was pushed into the role, kicking and screaming.
-              </p>
+              {data?.bodyParagraphs ? (
+                data.bodyParagraphs.map((paragraph, index) => (
+                  <p key={index}>{paragraph}</p>
+                ))
+              ) : (
+                <>
+                  <p>
+                    I began my career as a college professor, armed with three degrees in communication and a passion for teaching. But standing in front of bleary-eyed sophomores at 8 a.m., trying to make public speaking sound sexy? That wasn&apos;t it.
+                  </p>
+                  <p>
+                    During the summers, I picked up consulting work. Working with adults turned out to be where I wanted to be. I was helping people who actually wanted to be there. Eventually, I took on a full-time role that I thought was a consulting position. But six months into the job, I was pushed into a sales position, and I was terrified. I thought I was going to get fired because I did not know how to sell, nor did I want to learn. I was pushed into the role, kicking and screaming.
+                  </p>
+                </>
+              )}
             </motion.div>
 
             {/* Callout quote */}
@@ -74,9 +94,13 @@ export default function AboutDrCindy() {
                 className="text-black font-medium text-[18px] md:text-[28px] leading-[1.25] tracking-[0.02em] text-left"
                 style={{ fontFamily: "var(--font-montserrat)" }}
               >
-                People avoid sales
-                <br />
-                because of the &apos;ick factor.&apos;
+                {data?.calloutQuote || (
+                  <>
+                    People avoid sales
+                    <br />
+                    because of the &apos;ick factor.&apos;
+                  </>
+                )}
               </p>
             </motion.div>
 
@@ -90,7 +114,11 @@ export default function AboutDrCindy() {
               style={{ fontFamily: "var(--font-montserrat)" }}
             >
               <p>
-                To me, sales meant slick handshake deals, fake smiles, and a whole lot of manipulation. My boss told me, <em>&ldquo;If you can learn to sell, it&apos;ll change your life.&rdquo;</em> I rolled my eyes so hard they almost got stuck. But it turns out that he was right. A few months into the role, something clicked. I realized I didn&apos;t hate sales, I hated bad sales. I liked helping people. I enjoyed solving problems. And I was good at it. That&apos;s when it hit me: <strong>Sales isn&apos;t a business skill. It&apos;s a life skill.</strong>
+                {data?.closingParagraph || (
+                  <>
+                    To me, sales meant slick handshake deals, fake smiles, and a whole lot of manipulation. My boss told me, <em>&ldquo;If you can learn to sell, it&apos;ll change your life.&rdquo;</em> I rolled my eyes so hard they almost got stuck. But it turns out that he was right. A few months into the role, something clicked. I realized I didn&apos;t hate sales, I hated bad sales. I liked helping people. I enjoyed solving problems. And I was good at it. That&apos;s when it hit me: <strong>Sales isn&apos;t a business skill. It&apos;s a life skill.</strong>
+                  </>
+                )}
               </p>
             </motion.div>
 
@@ -102,11 +130,11 @@ export default function AboutDrCindy() {
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
             >
               <a
-                href="/about"
+                href={data?.cta?.href || "/about"}
                 className="inline-flex items-center justify-center gap-[16px] bg-[#FFC300] border-[0.5px] border-black text-black font-medium text-[16px] lg:text-[20px] leading-[30px] tracking-[0.02em] uppercase px-[30px] lg:px-[40px] py-[14px] lg:py-[19px] transition-all duration-300 hover:brightness-95 hover:scale-[1.01] shadow-[0_8px_24px_rgba(255,195,0,0.3)]"
                 style={{ fontFamily: "var(--font-montserrat)" }}
               >
-                Read More
+                {data?.cta?.label || "Read More"}
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18m0 0l-4-4m4 4l-4 4" />
                 </svg>
@@ -114,21 +142,32 @@ export default function AboutDrCindy() {
             </motion.div>
           </div>
 
-          {/* RIGHT: Dr. Cindy photo */}
+          {/* RIGHT: Dr. Cindy photo - fills the full height of the content */}
           <motion.div
             initial={{ opacity: 0, x: 60 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ margin: "-80px" }}
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-            className="relative flex-1 lg:flex-[1.1] w-full"
+            className="relative flex-1 lg:flex-[1.2] w-full lg:self-stretch"
           >
-            <div className="relative w-full aspect-[887/1524] max-w-[700px] ml-auto">
+            {/* Mobile: show normal image */}
+            <div className="lg:hidden relative w-full aspect-[3/4]">
               <Image
-                src="/images/about-cindy.png"
+                src={data?.photo || "/images/about-cindy.png"}
                 alt="Dr. Cindy McGovern"
                 fill
                 className="object-cover object-top"
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="100vw"
+              />
+            </div>
+            {/* Desktop: fill entire content height */}
+            <div className="hidden lg:block absolute inset-0">
+              <Image
+                src={data?.photo || "/images/about-cindy.png"}
+                alt="Dr. Cindy McGovern"
+                fill
+                className="object-cover object-top"
+                sizes="55vw"
               />
             </div>
           </motion.div>

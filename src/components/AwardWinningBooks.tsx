@@ -2,7 +2,22 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const books = [
+interface BooksProps {
+  sectionData?: {
+    heading?: string;
+    description?: string;
+  };
+  books?: Array<{
+    _id: string;
+    title: string;
+    subtitle?: string;
+    coverImage?: string;
+    buyLink?: string;
+    order: number;
+  }>;
+}
+
+const defaultBooks = [
   {
     title: "Sell Yourself",
     subtitle: "How to Create, Live, and Sell a Powerful Personal Brand",
@@ -17,7 +32,26 @@ const books = [
   },
 ];
 
-function BookCard({ book, index }: { book: typeof books[0]; index: number }) {
+// Fallback local images keyed by book title (for when Sanity has no image uploaded)
+const bookImageFallbacks: Record<string, string> = {
+  "Sell Yourself": "/images/book-one.png",
+  "Every Job Is a Sales Job": "/images/book-two.png",
+};
+
+interface BookCardProps {
+  book: {
+    title: string;
+    subtitle?: string;
+    image?: string;
+    coverImage?: string;
+    buyLink?: string;
+  };
+  index: number;
+}
+
+function BookCard({ book, index }: BookCardProps) {
+  const imageSrc = book.coverImage || book.image || bookImageFallbacks[book.title] || "/images/book-one.png";
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 50 }}
@@ -33,8 +67,8 @@ function BookCard({ book, index }: { book: typeof books[0]; index: number }) {
         transition={{ duration: 0.3 }}
       >
         <Image
-          src={book.image}
-          alt={`${book.title} - ${book.subtitle}`}
+          src={imageSrc}
+          alt={`${book.title} - ${book.subtitle || ""}`}
           fill
           className="object-contain drop-shadow-[0_12px_40px_rgba(0,0,0,0.12)]"
           sizes="(max-width: 768px) 320px, (max-width: 1024px) 420px, 520px"
@@ -58,7 +92,9 @@ function BookCard({ book, index }: { book: typeof books[0]; index: number }) {
   );
 }
 
-export default function AwardWinningBooks() {
+export default function AwardWinningBooks({ sectionData, books: sanityBooks }: BooksProps) {
+  const items = sanityBooks?.length ? sanityBooks : defaultBooks;
+
   return (
     <section className="relative bg-white overflow-hidden py-16 md:py-24 lg:py-32">
       {/* Gold swirl decoration behind */}
@@ -82,7 +118,7 @@ export default function AwardWinningBooks() {
           className="text-center text-black text-[30px] md:text-[clamp(2rem,5vw,60px)] font-semibold leading-[1] uppercase tracking-normal mb-6 md:mb-8"
           style={{ fontFamily: "var(--font-josefin)" }}
         >
-          Award-Winning Books
+          {sectionData?.heading || "Award-Winning Books"}
         </motion.h2>
 
         {/* Description */}
@@ -94,13 +130,23 @@ export default function AwardWinningBooks() {
           className="text-left md:text-center text-black text-[16px] md:text-[19px] lg:text-[22px] leading-[1.7] md:leading-[40px] max-w-[1039px] mx-auto mb-12 md:mb-16 lg:mb-20"
           style={{ fontFamily: "var(--font-montserrat)" }}
         >
-          Dr. Cindy&apos;s bestselling books are your personal masterclass in turning everyday moments into sales opportunities. Whether you&apos;re selling a product, an idea, or yourself, these books provide you with practical, actionable advice to reframe sales as a tool to enable you to take control and create the success you want.
+          {sectionData?.description || "Dr. Cindy\u2019s bestselling books are your personal masterclass in turning everyday moments into sales opportunities. Whether you\u2019re selling a product, an idea, or yourself, these books provide you with practical, actionable advice to reframe sales as a tool to enable you to take control and create the success you want."}
         </motion.p>
 
         {/* Books grid */}
         <div className="flex flex-col md:flex-row items-center md:items-end justify-center gap-8 md:gap-4 lg:gap-8 xl:gap-12 md:translate-x-[10%]">
-          {books.map((book, i) => (
-            <BookCard key={book.title} book={book} index={i} />
+          {items.map((book, i) => (
+            <BookCard
+              key={('_id' in book ? book._id : book.title)}
+              book={{
+                title: book.title,
+                subtitle: book.subtitle,
+                image: 'image' in book ? book.image : undefined,
+                coverImage: 'coverImage' in book ? book.coverImage : undefined,
+                buyLink: book.buyLink,
+              }}
+              index={i}
+            />
           ))}
         </div>
 

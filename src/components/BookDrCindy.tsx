@@ -3,7 +3,23 @@ import Image from "next/image";
 import { useState } from "react";
 import { motion } from "framer-motion";
 
-const speakingCategories = [
+interface BookSpeakingProps {
+  data?: {
+    heading?: string;
+    introText?: string;
+    bodyText?: string;
+    speakingCategories?: Array<{ label: string }>;
+    youtubeVideoId?: string;
+    testimonialQuote?: string;
+    testimonialAttribution?: string;
+    cta?: { label?: string; href?: string };
+    newsletterHeading?: string;
+    newsletterDescription?: string;
+    backgroundImage?: string;
+  };
+}
+
+const defaultSpeakingCategories = [
   {
     label: "Keynotes & Conferences",
     icon: (
@@ -48,9 +64,8 @@ const speakingCategories = [
   },
 ];
 
-function VideoEmbed() {
+function VideoEmbed({ videoId }: { videoId: string }) {
   const [playing, setPlaying] = useState(false);
-  const videoId = "t7oWUgFCXV0";
 
   return (
     <motion.div
@@ -158,13 +173,21 @@ function VideoEmbed() {
   );
 }
 
-export default function BookDrCindy() {
+export default function BookDrCindy({ data }: BookSpeakingProps) {
+  const videoId = data?.youtubeVideoId || "t7oWUgFCXV0";
+
+  // Merge Sanity labels onto default items (preserving SVG icons)
+  const speakingCategories = defaultSpeakingCategories.map((cat, i) => ({
+    ...cat,
+    label: data?.speakingCategories?.[i]?.label || cat.label,
+  }));
+
   return (
     <section className="relative bg-white overflow-hidden">
       {/* Silk texture background */}
       <div className="absolute inset-0 z-0">
         <Image
-          src="/images/image-94-book.png"
+          src={data?.backgroundImage || "/images/image-94-book.png"}
           alt=""
           fill
           className="object-cover"
@@ -223,7 +246,7 @@ export default function BookDrCindy() {
             backgroundClip: "text",
           }}
         >
-          Book Dr. Cindy<br />To Speak
+          {data?.heading || <>Book Dr. Cindy<br />To Speak</>}
         </motion.h2>
 
         {/* ===== TWO COLUMN: Text + Speaking Categories ===== */}
@@ -240,13 +263,13 @@ export default function BookDrCindy() {
               className="text-black text-[18px] md:text-[26px] lg:text-[28px] font-medium leading-[1.25] tracking-[0.02em] text-left"
               style={{ fontFamily: "var(--font-montserrat)" }}
             >
-              Looking for a speaker who transforms the way people think about sales and themselves?
+              {data?.introText || "Looking for a speaker who transforms the way people think about sales and themselves?"}
             </p>
             <p
               className="text-black text-[16px] md:text-[18px] lg:text-[20px] leading-[1.75] font-normal text-left"
               style={{ fontFamily: "var(--font-montserrat)" }}
             >
-              Dr. Cindy McGovern, known as the First Lady of Sales®, delivers dynamic, actionable keynotes that show individuals and organizations how to sell themselves, their ideas, and their value in every area of life. With decades of experience as a sales consultant, bestselling author, keynote speaker, and CEO, Dr. Cindy INpowers audiences. She helps them activate the power they already have, rather than waiting for permission or external validation to start creating the success they deserve. Through this approach, she makes sales feel authentic, ethical, and even fun.
+              {data?.bodyText || "Dr. Cindy McGovern, known as the First Lady of Sales\u00AE, delivers dynamic, actionable keynotes that show individuals and organizations how to sell themselves, their ideas, and their value in every area of life. With decades of experience as a sales consultant, bestselling author, keynote speaker, and CEO, Dr. Cindy INpowers audiences. She helps them activate the power they already have, rather than waiting for permission or external validation to start creating the success they deserve. Through this approach, she makes sales feel authentic, ethical, and even fun."}
             </p>
           </motion.div>
 
@@ -280,7 +303,7 @@ export default function BookDrCindy() {
         </div>
 
         {/* ===== YOUTUBE VIDEO ===== */}
-        <VideoEmbed />
+        <VideoEmbed videoId={videoId} />
 
         {/* ===== TESTIMONIAL ===== */}
         <motion.div
@@ -314,22 +337,16 @@ export default function BookDrCindy() {
               }}
             >
               <p
-                className="text-black text-[16px] md:text-[20px] lg:text-[22px] font-semibold leading-[1.4] mb-2 text-left"
-                style={{ fontFamily: "var(--font-montserrat)" }}
-              >
-                Dr. Cindy&apos;s approach mixes simplicity with actionable takeaways,
-              </p>
-              <p
                 className="text-black text-[16px] md:text-[20px] lg:text-[22px] font-semibold leading-[1.4] mb-8 text-left"
                 style={{ fontFamily: "var(--font-montserrat)" }}
               >
-                creating measurable ROIs. I highly recommend her!
+                {data?.testimonialQuote || "Dr. Cindy\u2019s approach mixes simplicity with actionable takeaways, creating measurable ROIs. I highly recommend her!"}
               </p>
               <p
                 className="text-black text-[16px] md:text-[20px] lg:text-[22px] font-medium leading-[1.4] text-left"
                 style={{ fontFamily: "var(--font-montserrat)" }}
               >
-                - Kathleen S. Ellis, Senior Vice President, CNA International Solution
+                {data?.testimonialAttribution || "- Kathleen S. Ellis, Senior Vice President, CNA International Solution"}
               </p>
             </div>
           </div>
@@ -344,13 +361,13 @@ export default function BookDrCindy() {
           className="flex justify-center mb-20 md:mb-28"
         >
           <motion.a
-            href="/speaking"
+            href={data?.cta?.href || "/speaking"}
             className="inline-flex items-center justify-center gap-3 bg-[#FFC300] border-[0.5px] border-black text-black font-medium text-[14px] md:text-[16px] lg:text-[20px] leading-[30px] tracking-[0.02em] uppercase px-5 md:px-[30px] lg:px-[40px] py-3 lg:py-[19px] transition-all duration-300 hover:brightness-95 shadow-[0_8px_24px_rgba(255,195,0,0.3)] whitespace-nowrap"
             style={{ fontFamily: "var(--font-montserrat)" }}
             whileHover={{ scale: 1.03 }}
             whileTap={{ scale: 0.98 }}
           >
-            Book Dr. Cindy to Speak
+            {data?.cta?.label || "Book Dr. Cindy to Speak"}
             <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18m0 0l-4-4m4 4l-4 4" />
             </svg>
@@ -369,13 +386,13 @@ export default function BookDrCindy() {
             className="text-black text-[30px] md:text-[clamp(2rem,6vw,60px)] font-semibold leading-[1.05] uppercase mb-6"
             style={{ fontFamily: "var(--font-josefin)" }}
           >
-            Learn How to Sell<br />Yourself Without<br />Selling Out.
+            {data?.newsletterHeading || <>Learn How to Sell<br />Yourself Without<br />Selling Out.</>}
           </h3>
           <p
             className="text-black text-[16px] md:text-[20px] lg:text-[22px] font-normal leading-[1.5] mb-10 md:mb-12 text-left md:text-center"
             style={{ fontFamily: "var(--font-montserrat)" }}
           >
-            Sign up for monthly inspiration, tough love, and a little sparkle.
+            {data?.newsletterDescription || "Sign up for monthly inspiration, tough love, and a little sparkle."}
           </p>
 
           {/* Signup Form */}

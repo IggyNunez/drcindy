@@ -1,9 +1,32 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-const testimonials = [
+interface TestimonialItem {
+  _id?: string;
+  quote: string;
+  body: string;
+  name: string;
+  title: string;
+  avatar?: string;
+  order?: number;
+}
+
+interface TestimonialsProps {
+  sectionData?: { heading?: string };
+  testimonials?: Array<{
+    _id: string;
+    quote: string;
+    body: string;
+    name: string;
+    title: string;
+    avatar?: string;
+    order: number;
+  }>;
+}
+
+const defaultTestimonials: TestimonialItem[] = [
   {
     quote: "Dr. Cindy's session was the highest rated at the whole conference.",
     body: "We all learned great tactics with immediate takeaways. Highly recommend!",
@@ -56,7 +79,9 @@ function QuoteIcon() {
   );
 }
 
-function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] }) {
+function TestimonialCard({ testimonial }: { testimonial: TestimonialItem }) {
+  const avatarSrc = testimonial.avatar || "/images/testimonial-1.png";
+
   return (
     <div className="relative h-full">
       {/* Quote icon - overlapping top-left corner of card */}
@@ -85,7 +110,7 @@ function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] 
             <div className="absolute inset-0 rounded-full border-[2.5px] border-[#cba465] bg-white" />
             <div className="absolute inset-[4px] rounded-full overflow-hidden">
               <Image
-                src={testimonial.avatar}
+                src={avatarSrc}
                 alt={testimonial.name}
                 fill
                 className="object-cover"
@@ -112,10 +137,13 @@ function TestimonialCard({ testimonial }: { testimonial: typeof testimonials[0] 
   );
 }
 
-// Total pages for desktop (3 cards per page, 6 testimonials = 2 pages)
-const totalDesktopPages = Math.ceil(testimonials.length / 3);
+export default function Testimonials({ sectionData, testimonials: sanityTestimonials }: TestimonialsProps) {
+  const items = sanityTestimonials?.length ? sanityTestimonials : defaultTestimonials;
+  const heading = sectionData?.heading || "What People Are Saying";
 
-export default function Testimonials() {
+  // Total pages for desktop (3 cards per page)
+  const totalDesktopPages = useMemo(() => Math.ceil(items.length / 3), [items.length]);
+
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(0);
   const [desktopPage, setDesktopPage] = useState(0);
@@ -126,12 +154,12 @@ export default function Testimonials() {
       setDirection(newDirection);
       setCurrent((prev) => {
         const next = prev + newDirection;
-        if (next < 0) return testimonials.length - 1;
-        if (next >= testimonials.length) return 0;
+        if (next < 0) return items.length - 1;
+        if (next >= items.length) return 0;
         return next;
       });
     },
-    []
+    [items.length]
   );
 
   // Auto-advance mobile
@@ -149,9 +177,9 @@ export default function Testimonials() {
       setDesktopPage((prev) => (prev + 1) % totalDesktopPages);
     }, 6000);
     return () => clearInterval(timer);
-  }, []);
+  }, [totalDesktopPages]);
 
-  const currentDesktopCards = testimonials.slice(desktopPage * 3, desktopPage * 3 + 3);
+  const currentDesktopCards = items.slice(desktopPage * 3, desktopPage * 3 + 3);
 
   const slideVariants = {
     enter: (dir: number) => ({
@@ -183,7 +211,7 @@ export default function Testimonials() {
       scale: 1,
       transition: {
         duration: 0.7,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
         delay: i * 0.12,
       },
     }),
@@ -194,7 +222,7 @@ export default function Testimonials() {
       scale: 0.95,
       transition: {
         duration: 0.4,
-        ease: [0.22, 1, 0.36, 1],
+        ease: [0.22, 1, 0.36, 1] as [number, number, number, number],
         delay: (2 - i) * 0.06,
       },
     }),
@@ -218,7 +246,7 @@ export default function Testimonials() {
               "linear-gradient(147deg, rgb(0,0,0) 47%, rgb(255,195,0) 98%)",
           }}
         >
-          What People Are Saying
+          {heading}
         </span>
       </motion.h2>
 
@@ -236,14 +264,14 @@ export default function Testimonials() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0"
             >
-              <TestimonialCard testimonial={testimonials[current]} />
+              <TestimonialCard testimonial={items[current]} />
             </motion.div>
           </AnimatePresence>
         </div>
 
         {/* Navigation pills */}
         <div className="flex justify-center items-center gap-2 mt-8">
-          {testimonials.map((_, i) => (
+          {items.map((_, i) => (
             <button
               key={i}
               onClick={() => {

@@ -3,9 +3,33 @@ import { useState, useCallback } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function Hero() {
+interface HeroProps {
+  data?: {
+    titleLine1?: string;
+    titleLine2?: string;
+    titleLine3?: string;
+    titleLine4?: string;
+    heroBodyText?: string;
+    heroVideoLabel?: string;
+    heroTagline?: string;
+    heroCta?: { label?: string; href?: string };
+    youtubeVideoId?: string;
+    storyHeading?: string;
+    storyParagraphs?: string[];
+    dailySalesHeading?: string;
+    dailySalesSubheading?: string;
+    dailySalesBody?: string;
+    pullQuote?: string;
+    helpHeading?: string;
+    helpBody?: string;
+    helpCta?: { label?: string; href?: string };
+    helpMobileCta?: { label?: string; href?: string };
+  };
+}
+
+export default function Hero({ data }: HeroProps) {
   const [videoOpen, setVideoOpen] = useState(false);
-  const videoId = "t7oWUgFCXV0";
+  const videoId = data?.youtubeVideoId || "t7oWUgFCXV0";
 
   const openVideo = useCallback(() => setVideoOpen(true), []);
   const closeVideo = useCallback(() => setVideoOpen(false), []);
@@ -61,7 +85,7 @@ export default function Hero() {
                   transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
                   className="text-white text-[clamp(3rem,8.5vw,128px)] xl:text-[128px] font-bold tracking-normal uppercase leading-[1.06] hero-title-shadow" style={{ fontFamily: 'var(--font-josefin)' }}
                 >
-                  First
+                  {data?.titleLine1 || "First"}
                 </motion.h1>
                 <div className="w-[60px] md:w-[150px] lg:w-[200px] shrink-0" />
                 <motion.span
@@ -70,7 +94,7 @@ export default function Hero() {
                   transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.1 }}
                   className="text-white text-[clamp(3rem,8.5vw,128px)] xl:text-[128px] font-bold tracking-normal uppercase leading-[1.06] ml-4 lg:ml-8 hero-title-shadow" style={{ fontFamily: 'var(--font-josefin)' }}
                 >
-                  Lady
+                  {data?.titleLine2 || "Lady"}
                 </motion.span>
               </div>
 
@@ -100,10 +124,10 @@ export default function Hero() {
                 className="relative z-[25] w-full flex items-baseline mt-1 md:mt-3 lg:mt-4 justify-center gap-[15px] md:gap-[45px] lg:gap-[60px]"
               >
                 <span className="text-white text-[clamp(3rem,8.5vw,128px)] xl:text-[128px] font-bold tracking-normal uppercase leading-[1.06] ml-[25px] md:ml-[85px] lg:ml-[135px] hero-title-shadow" style={{ fontFamily: 'var(--font-josefin)' }}>
-                  of
+                  {data?.titleLine3 || "of"}
                 </span>
                 <span className="text-[clamp(5rem,12vw,179.2px)] xl:text-[179.2px] font-bold tracking-normal uppercase leading-none gold-shimmer-text" style={{ fontFamily: 'var(--font-josefin)' }}>
-                  Sales
+                  {data?.titleLine4 || "Sales"}
                 </span>
               </motion.div>
 
@@ -124,10 +148,10 @@ export default function Hero() {
                 >
                   <div className="max-w-[240px] md:max-w-[320px] lg:max-w-none lg:w-[380px]">
                     <p className="text-white text-[14px] md:text-[17px] leading-[22px] md:leading-[26px] tracking-[0.02em] font-normal" style={{ fontFamily: 'var(--font-montserrat)' }}>
-                      I teach real people how to get what they want without being someone they&apos;re not.
+                      {data?.heroBodyText || "I teach real people how to get what they want without being someone they're not."}
                     </p>
                     <p className="text-white text-[16px] md:text-[20px] leading-[24px] md:leading-[30px] tracking-[0.02em] font-bold mt-1" style={{ fontFamily: 'var(--font-montserrat)' }}>
-                      Watch Dr. Cindy on stage.
+                      {data?.heroVideoLabel || "Watch Dr. Cindy on stage."}
                     </p>
                   </div>
                   <button
@@ -148,16 +172,14 @@ export default function Hero() {
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 1.3 }}
                   className="flex flex-col items-center lg:items-start text-center lg:text-left order-1 lg:order-2 lg:mr-[15%] lg:translate-x-[50px]">
                   <p className="text-white text-[1.15rem] md:text-[clamp(1.1rem,2vw,1.35rem)] font-[var(--font-montserrat)] font-normal leading-relaxed tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                    Sales Is a Life Skill,
-                    <br />
-                    Not a Business Skill.
+                    {data?.heroTagline || "Sales Is a Life Skill, Not a Business Skill."}
                   </p>
                   <a
-                    href="/book-speaking"
+                    href={data?.heroCta?.href || "/book-speaking"}
                     className="mt-4 md:mt-5 inline-flex items-center gap-3 md:gap-4 bg-black/30 border border-gold text-gold font-medium text-[14px] md:text-[20px] leading-[24px] md:leading-[30px] tracking-[0.02em] uppercase px-4 py-3 md:p-5 transition-all duration-300 hover:bg-black/50 hover:scale-[1.02] whitespace-nowrap shadow-[0_0_8px_rgba(203,164,101,0.4),inset_0_0_8px_rgba(255,243,200,0.1)]"
                     style={{ fontFamily: 'var(--font-montserrat)' }}
                   >
-                    Book Dr. Cindy to Speak
+                    {data?.heroCta?.label || "Book Dr. Cindy to Speak"}
                     <svg className="w-3.5 h-3.5 md:w-4 md:h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                     </svg>
@@ -311,7 +333,7 @@ export default function Hero() {
               },
             }}
             className="text-center uppercase mb-12 md:mb-16 -mt-[180px] md:-mt-[160px] lg:-mt-[100px] text-black text-[8.5vw] md:text-[5vw] lg:text-[clamp(2.5rem,4vw,60px)] xl:text-[60px] font-semibold leading-[1.1] tracking-normal relative z-10" style={{ fontFamily: 'var(--font-josefin)' }}>
-            {["You've been in Sales ", "\n", "since you were five."].map((line, li) =>
+            {(data?.storyHeading || "You've been in Sales since you were five.").split(/(?<=\S)\s(?=since)/i).map((part, i, arr) => i < arr.length - 1 ? [part + " ", "\n"] : [part]).flat().map((line, li) =>
               line === "\n" ? (
                 <br key={`br-${li}`} className="hidden sm:inline" />
               ) : (
@@ -361,20 +383,28 @@ export default function Hero() {
             {/* Left: Body text */}
             <div className="text-left order-2 lg:order-1">
               <div className="space-y-8 text-black text-[16px] md:text-[22px] leading-[28px] md:leading-[32px] tracking-[0.02em] font-medium" style={{ fontFamily: 'var(--font-montserrat)' }}>
-                <p>
-                  Campaigning for dessert, making your case to stay up just five
-                  more minutes, and negotiating a raise in your allowance were all
-                  sales conversations.
-                </p>
-                <p className="!font-normal">
-                  But no one ever told you that&apos;s what it was. And they
-                  definitely didn&apos;t teach it in school.
-                </p>
-                <p className="!font-normal">
-                  Sales has been boxed into boardrooms and quotas, when in
-                  reality, it belongs at kitchen tables, in classrooms, and
-                  inside everyday conversations.
-                </p>
+                {(data?.storyParagraphs && data.storyParagraphs.length > 0) ? (
+                  data.storyParagraphs.map((para, i) => (
+                    <p key={i} className={i > 0 ? "!font-normal" : ""}>{para}</p>
+                  ))
+                ) : (
+                  <>
+                    <p>
+                      Campaigning for dessert, making your case to stay up just five
+                      more minutes, and negotiating a raise in your allowance were all
+                      sales conversations.
+                    </p>
+                    <p className="!font-normal">
+                      But no one ever told you that&apos;s what it was. And they
+                      definitely didn&apos;t teach it in school.
+                    </p>
+                    <p className="!font-normal">
+                      Sales has been boxed into boardrooms and quotas, when in
+                      reality, it belongs at kitchen tables, in classrooms, and
+                      inside everyday conversations.
+                    </p>
+                  </>
+                )}
               </div>
             </div>
 
@@ -410,7 +440,7 @@ export default function Hero() {
               },
             }}
             className="uppercase text-[clamp(1.5rem,5vw,60px)] leading-[1] font-semibold text-black mb-8 md:mb-12" style={{ fontFamily: 'var(--font-josefin)' }}>
-            {["Every day, you're already", "\n", "selling your ideas,", "\n", "your time, your boundaries,", "\n", "and your worth."].map((line, li) =>
+            {(data?.dailySalesHeading || "Every day, you're already selling your ideas, your time, your boundaries, and your worth.").split(/,\s*/).map((part, i, arr) => i < arr.length - 1 ? [part + ",", "\n"] : [part]).flat().map((line, li) =>
               line === "\n" ? (
                 <br key={`br-${li}`} />
               ) : (
@@ -468,7 +498,7 @@ export default function Hero() {
               },
             }}
             className="font-[var(--font-josefin)] text-[clamp(4rem,18vw,150.77px)] font-bold leading-[1.11] text-black uppercase mb-8 md:mb-12 text-center">
-            {["You", "\n", "just", "\n", "don't", "\n", "realize", "\n", "it."].map((word, wi) =>
+            {(data?.dailySalesSubheading || "You just don't realize it.").split(/\s+/).map((word, i, arr) => i < arr.length - 1 ? [word, "\n"] : [word]).flat().map((word, wi) =>
               word === "\n" ? (
                 <br key={`br-${wi}`} />
               ) : (
@@ -504,7 +534,7 @@ export default function Hero() {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.3 }}
             className="text-black font-semibold text-[18px] md:text-[clamp(1rem,2.5vw,1.25rem)] mb-6 text-center" style={{ fontFamily: 'var(--font-montserrat)' }}>
-            I didn&apos;t either.
+            {data?.dailySalesBody ? data.dailySalesBody.split('\n')[0] : "I didn\u2019t either."}
           </motion.p>
           <motion.p
             initial={{ opacity: 0, y: 25 }}
@@ -512,9 +542,7 @@ export default function Hero() {
             viewport={{ once: true, margin: "-40px" }}
             transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.45 }}
             className="text-black text-[16px] md:text-[clamp(1rem,2.5vw,22px)] leading-[1.6] lg:leading-[33px] font-semibold max-w-3xl mx-auto text-center" style={{ fontFamily: 'var(--font-montserrat)' }}>
-            With a PhD in Communication, I left teaching to pursue a career in consulting.
-            I never wanted to go into sales, but during that time, I was pushed into the
-            role, and everything changed.
+            {data?.dailySalesBody ? data.dailySalesBody.split('\n').slice(1).join(' ') : "With a PhD in Communication, I left teaching to pursue a career in consulting. I never wanted to go into sales, but during that time, I was pushed into the role, and everything changed."}
           </motion.p>
         </div>
       </div>
@@ -594,11 +622,14 @@ export default function Hero() {
                       },
                     }}
                     className="text-black text-[16px] md:text-[clamp(1.2rem,4vw,50px)] leading-[1.5] md:leading-[1.3] lg:leading-[65px] font-light text-left" style={{ fontFamily: 'var(--font-josefin)' }}>
-                    {[
-                      { text: "I realized sales was not icky, cheesy or pushy.", bold: true },
-                      { text: "\n", bold: false },
-                      { text: "I had been selling my entire life because I had been helping people get what they wanted, simply because I was curious about what they needed.", bold: false },
-                    ].map((segment, si) =>
+                    {(() => {
+                      const quoteText = data?.pullQuote || "I realized sales was not icky, cheesy or pushy.\nI had been selling my entire life because I had been helping people get what they wanted, simply because I was curious about what they needed.";
+                      const parts = quoteText.split('\n');
+                      return [
+                        { text: parts[0] || "", bold: true },
+                        ...(parts.length > 1 ? [{ text: "\n", bold: false }, { text: parts.slice(1).join(' '), bold: false }] : []),
+                      ];
+                    })().map((segment, si) =>
                       segment.text === "\n" ? (
                         <br key={`br-${si}`} />
                       ) : (
@@ -690,21 +721,21 @@ export default function Hero() {
                 transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1] }}
                 className="w-full lg:w-[55%] flex flex-col justify-center items-start gap-[16px] lg:gap-[24px] border-l-[3px] border-[#CBA465] lg:border-l-0 pl-5 lg:pl-[20px] xl:pl-[40px] pb-12 lg:pb-28 pt-8 lg:pt-24 max-w-[621px] mx-auto lg:mx-0">
               <h2 className="text-black text-[25px] md:text-[40px] lg:text-[clamp(2rem,4.5vw,60px)] font-semibold leading-[1.05] lg:leading-[60px] uppercase text-left self-stretch" style={{ fontFamily: 'var(--font-josefin)' }}>
-                Now I Help People Sell Themselves Without Selling Their Souls.
+                {data?.helpHeading || "Now I Help People Sell Themselves Without Selling Their Souls."}
               </h2>
 
               <p className="text-black text-[16px] lg:text-[22px] leading-[28px] lg:leading-[40px] font-normal text-left self-stretch" style={{ fontFamily: 'var(--font-montserrat)' }}>
-                Whether you&apos;re looking to level up your corporate skills, selling yourself as a leader, or still campaigning for dessert, my 5-Step Formula for selling anything is simple, human, and actually fun. I&apos;ll help you use the sales skills you&apos;ve always had to get what you truly want—at work, at home, and in life.
+                {data?.helpBody || "Whether you\u2019re looking to level up your corporate skills, selling yourself as a leader, or still campaigning for dessert, my 5-Step Formula for selling anything is simple, human, and actually fun. I\u2019ll help you use the sales skills you\u2019ve always had to get what you truly want\u2014at work, at home, and in life."}
               </p>
 
               {/* CTA Button - different text on mobile vs desktop */}
               <a
-                href="/begin"
+                href={data?.helpCta?.href || "/begin"}
                 className="inline-flex items-center justify-center gap-[16px] bg-[#FFC300] border-[0.5px] border-black text-black font-medium text-[14px] lg:text-[20px] leading-[30px] tracking-[0.02em] uppercase px-[24px] lg:px-[40px] py-[14px] lg:py-[19px] transition-all duration-300 hover:brightness-95 hover:scale-[1.01] shadow-[0_8px_24px_rgba(255,195,0,0.4)] w-full lg:w-auto"
                 style={{ fontFamily: 'var(--font-montserrat)' }}
               >
-                <span className="hidden lg:inline">Begin - Takes 4 minutes</span>
-                <span className="lg:hidden">Book Dr. Cindy to Speak</span>
+                <span className="hidden lg:inline">{data?.helpCta?.label || "Begin - Takes 4 minutes"}</span>
+                <span className="lg:hidden">{data?.helpMobileCta?.label || "Book Dr. Cindy to Speak"}</span>
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18m0 0l-4-4m4 4l-4 4" />
                 </svg>

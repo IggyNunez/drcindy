@@ -2,14 +2,27 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-const services = [
+interface WorkTogetherProps {
+  data?: {
+    heading?: string;
+    subtitle?: string;
+    body?: string;
+    services?: Array<{ label: string; href: string }>;
+    photo?: string;
+    cta?: { label?: string; href?: string };
+  };
+}
+
+const defaultServices = [
   { label: "Keynote Speaking", href: "/speaking" },
   { label: "1:1 Coaching & Consulting", href: "/work-together/coaching" },
   { label: "Training & Team Development", href: "/work-together/workshops" },
   { label: "Online Academy", href: "/vault" },
 ];
 
-export default function WorkTogether() {
+export default function WorkTogether({ data }: WorkTogetherProps) {
+  const services = data?.services?.length ? data.services : defaultServices;
+
   return (
     <section className="relative bg-white overflow-hidden py-10 md:py-24 lg:py-32">
       <div className="relative max-w-[1440px] mx-auto px-6 lg:px-[60px]">
@@ -25,7 +38,7 @@ export default function WorkTogether() {
             {/* Dr. Cindy photo */}
             <div className="relative w-full h-[400px] md:h-[500px] lg:h-[600px]">
               <Image
-                src="/images/cindy-sitting-vignette.png"
+                src={data?.photo || "/images/cindy-sitting-vignette.png"}
                 alt="Dr. Cindy McGovern"
                 fill
                 className="object-contain object-bottom"
@@ -79,13 +92,13 @@ export default function WorkTogether() {
                 className="text-black text-[30px] md:text-[clamp(2rem,5vw,60px)] font-semibold leading-[1] uppercase tracking-normal"
                 style={{ fontFamily: "var(--font-josefin)" }}
               >
-                Work Together
+                {data?.heading || "Work Together"}
               </h2>
               <p
                 className="text-black text-[18px] md:text-[24px] lg:text-[28px] font-medium leading-[1.25] tracking-[0.02em] text-left"
                 style={{ fontFamily: "var(--font-montserrat)" }}
               >
-                Sales is the key to the life and business you want.
+                {data?.subtitle || "Sales is the key to the life and business you want."}
               </p>
             </div>
 
@@ -94,19 +107,19 @@ export default function WorkTogether() {
               className="text-black text-[16px] md:text-[19px] lg:text-[22px] leading-[1.7] md:leading-[40px] text-left"
               style={{ fontFamily: "var(--font-montserrat)" }}
             >
-              Whether you&apos;re leading a team, building your career, or simply ready to stop waiting for permission, Dr. Cindy offers multiple ways to help you transform how you sell yourself and your ideas. From hands-on consulting and dynamic training programs for organizations to one-on-one coaching for leaders and professionals, as well as on-demand courses, every option is designed to meet you where you are and move you forward. No matter how you choose to work with Dr. Cindy, you&apos;ll walk away with clear, actionable strategies you can use immediately and the confidence to actually use them. Click below to explore all services and find the best fit for you.
+              {data?.body || "Whether you\u2019re leading a team, building your career, or simply ready to stop waiting for permission, Dr. Cindy offers multiple ways to help you transform how you sell yourself and your ideas. From hands-on consulting and dynamic training programs for organizations to one-on-one coaching for leaders and professionals, as well as on-demand courses, every option is designed to meet you where you are and move you forward. No matter how you choose to work with Dr. Cindy, you\u2019ll walk away with clear, actionable strategies you can use immediately and the confidence to actually use them. Click below to explore all services and find the best fit for you."}
             </p>
 
             {/* CTA Button */}
             <div>
               <motion.a
-                href="/work-together/consulting"
+                href={data?.cta?.href || "/work-together/consulting"}
                 className="inline-flex items-center justify-center gap-3 bg-[#FFC300] border-[0.5px] border-black text-black font-medium text-[14px] md:text-[16px] lg:text-[20px] leading-[30px] tracking-[0.02em] uppercase px-5 md:px-[30px] lg:px-[40px] py-3 lg:py-[19px] transition-all duration-300 hover:brightness-95 shadow-[0_8px_24px_rgba(255,195,0,0.3)] whitespace-nowrap"
                 style={{ fontFamily: "var(--font-montserrat)" }}
                 whileHover={{ scale: 1.03 }}
                 whileTap={{ scale: 0.98 }}
               >
-                Begin - Takes 4 minutes
+                {data?.cta?.label || "Begin - Takes 4 minutes"}
                 <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
                   <path strokeLinecap="round" strokeLinejoin="round" d="M3 12h18m0 0l-4-4m4 4l-4 4" />
                 </svg>
