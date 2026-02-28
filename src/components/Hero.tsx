@@ -170,9 +170,18 @@ export default function Hero({ data }: HeroProps) {
                   initial={{ opacity: 0, y: 30 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 1.3 }}
-                  className="flex flex-col items-center lg:items-start text-center lg:text-left order-1 lg:order-2 lg:mr-[15%] lg:translate-x-[50px]">
+                  className="flex flex-col items-center lg:items-start text-center lg:text-left order-1 lg:order-2 lg:mr-[15%] lg:translate-x-[100px]">
                   <p className="text-white text-[1.15rem] md:text-[clamp(1.1rem,2vw,1.35rem)] font-[var(--font-montserrat)] font-normal leading-relaxed tracking-wide drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">
-                    {data?.heroTagline || "Sales Is a Life Skill, Not a Business Skill."}
+                    {(() => {
+                      const tagline = data?.heroTagline || "Sales Is a Life Skill, Not a Business Skill.";
+                      const parts = tagline.split(/,\s*/);
+                      return parts.length > 1 ? (
+                        <>
+                          {parts[0]},<br />
+                          {parts.slice(1).join(", ")}
+                        </>
+                      ) : tagline;
+                    })()}
                   </p>
                   <a
                     href={data?.heroCta?.href || "/book-speaking"}
@@ -379,10 +388,10 @@ export default function Hero({ data }: HeroProps) {
           </motion.h2>
 
           {/* Body text + Lemonade stand side by side */}
-          <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-8 lg:gap-8 items-end">
+          <div className="grid grid-cols-1 lg:grid-cols-[2fr_3fr] gap-8 lg:gap-8 items-center">
             {/* Left: Body text */}
             <div className="text-left order-2 lg:order-1">
-              <div className="space-y-8 text-black text-[16px] md:text-[22px] leading-[28px] md:leading-[32px] tracking-[0.02em] font-medium" style={{ fontFamily: 'var(--font-montserrat)' }}>
+              <div className="space-y-4 text-black text-[16px] md:text-[22px] leading-[28px] md:leading-[32px] tracking-[0.02em] font-medium" style={{ fontFamily: 'var(--font-montserrat)' }}>
                 {(data?.storyParagraphs && data.storyParagraphs.length > 0) ? (
                   data.storyParagraphs.map((para, i) => (
                     <p key={i} className={i > 0 ? "!font-normal" : ""}>{para}</p>

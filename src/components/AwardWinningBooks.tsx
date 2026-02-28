@@ -96,7 +96,7 @@ export default function AwardWinningBooks({ sectionData, books: sanityBooks }: B
   const items = sanityBooks?.length ? sanityBooks : defaultBooks;
 
   return (
-    <section className="relative bg-white overflow-hidden py-16 md:py-24 lg:py-32">
+    <section className="relative bg-white overflow-hidden py-8 md:py-24 lg:py-32">
       {/* Gold swirl decoration behind */}
       <div className="absolute top-0 left-0 w-full h-full pointer-events-none opacity-10">
         <Image

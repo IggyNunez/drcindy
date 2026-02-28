@@ -392,12 +392,12 @@ export default function Footer({ data }: FooterProps) {
         {/* Nav + Social row */}
         <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-8 mb-12">
           {/* Nav links */}
-          <nav className="flex flex-wrap justify-center lg:justify-start gap-x-10 lg:gap-x-14 gap-y-3">
+          <nav className="flex flex-wrap justify-center lg:justify-start gap-x-6 xl:gap-x-10 gap-y-3">
             {navLinks.map((link) => (
               <Link
                 key={link.label}
                 href={link.href}
-                className="text-[#FFFDF0] text-[16px] font-normal leading-[28px] hover:text-[#FFC300] transition-colors inline-flex items-center gap-1.5"
+                className="text-[#FFFDF0] text-[14px] lg:text-[15px] font-normal leading-[28px] hover:text-[#FFC300] transition-colors inline-flex items-center gap-1.5 whitespace-nowrap"
                 style={{ fontFamily: "var(--font-montserrat)" }}
               >
                 {link.label}

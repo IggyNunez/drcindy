@@ -63,7 +63,7 @@ export default function AboutDrCindy({ data }: AboutProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ margin: "-80px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
-              className="space-y-6 text-black text-[16px] md:text-[19px] lg:text-[22px] leading-[1.8] md:leading-[40px] text-left"
+              className="space-y-2 text-black text-[16px] md:text-[19px] lg:text-[22px] leading-[1.8] md:leading-[40px] text-left"
               style={{ fontFamily: "var(--font-montserrat)" }}
             >
               {data?.bodyParagraphs ? (
@@ -88,7 +88,7 @@ export default function AboutDrCindy({ data }: AboutProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ margin: "-80px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-              className="my-8 md:my-10"
+              className="my-4 md:my-5"
             >
               <p
                 className="text-black font-medium text-[18px] md:text-[28px] leading-[1.25] tracking-[0.02em] text-left"
@@ -110,7 +110,7 @@ export default function AboutDrCindy({ data }: AboutProps) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ margin: "-80px" }}
               transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.25 }}
-              className="text-black text-[16px] md:text-[19px] lg:text-[22px] leading-[1.8] md:leading-[40px] mb-10 text-left"
+              className="text-black text-[16px] md:text-[19px] lg:text-[22px] leading-[1.8] md:leading-[40px] mb-5 text-left"
               style={{ fontFamily: "var(--font-montserrat)" }}
             >
               <p>
@@ -150,23 +150,24 @@ export default function AboutDrCindy({ data }: AboutProps) {
             transition={{ duration: 0.9, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
             className="relative flex-1 lg:flex-[1.2] w-full lg:self-stretch"
           >
-            {/* Mobile: show normal image */}
-            <div className="lg:hidden relative w-full aspect-[3/4]">
+            {/* Mobile: show full image */}
+            <div className="lg:hidden relative w-full">
               <Image
                 src={data?.photo || "/images/about-cindy.png"}
                 alt="Dr. Cindy McGovern"
-                fill
-                className="object-cover object-top"
+                width={800}
+                height={1000}
+                className="w-full h-auto object-contain"
                 sizes="100vw"
               />
             </div>
-            {/* Desktop: fill entire content height */}
+            {/* Desktop: contain full image within content height */}
             <div className="hidden lg:block absolute inset-0">
               <Image
                 src={data?.photo || "/images/about-cindy.png"}
                 alt="Dr. Cindy McGovern"
                 fill
-                className="object-cover object-top"
+                className="object-contain object-center"
                 sizes="55vw"
               />
             </div>

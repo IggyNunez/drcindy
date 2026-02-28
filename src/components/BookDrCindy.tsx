@@ -237,7 +237,7 @@ export default function BookDrCindy({ data }: BookSpeakingProps) {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ margin: "-80px" }}
           transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
-          className="text-center text-[45px] md:text-[clamp(3rem,10vw,150px)] leading-[0.95] mb-16 md:mb-24"
+          className="text-center text-[45px] md:text-[clamp(3rem,7vw,100px)] leading-[0.95] mb-16 md:mb-24"
           style={{
             fontFamily: "var(--font-italiana)",
             backgroundImage: "linear-gradient(115deg, rgb(0, 0, 0) 47%, rgb(255, 195, 0) 98%)",
