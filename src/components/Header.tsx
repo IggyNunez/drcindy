@@ -359,7 +359,7 @@ export default function Header({ data }: HeaderProps) {
         </motion.button>
       </div>
 
-      {/* Mobile Menu - Full screen overlay drawer from right */}
+      {/* Mobile Menu - Compact modern overlay */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
@@ -369,116 +369,97 @@ export default function Header({ data }: HeaderProps) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
+              className="fixed inset-0 bg-black/70 backdrop-blur-md z-40 lg:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
 
-            {/* Drawer panel sliding from right */}
+            {/* Compact slide-down panel */}
             <motion.div
-              initial={{ x: "100%" }}
-              animate={{ x: 0 }}
-              exit={{ x: "100%" }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed top-0 right-0 bottom-0 w-[85vw] max-w-[380px] bg-[#0a0a0a] z-50 lg:hidden overflow-y-auto flex flex-col"
+              initial={{ y: "-100%", opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: "-100%", opacity: 0 }}
+              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+              className="fixed top-0 left-0 right-0 bg-[#0a0a0a]/95 backdrop-blur-xl z-50 lg:hidden overflow-hidden"
+              style={{ borderBottom: "2px solid rgba(203, 164, 101, 0.3)" }}
             >
-              {/* Gold accent line at top */}
-              <motion.div
-                className="absolute top-0 left-0 right-0 h-[2px]"
-                style={{ background: "linear-gradient(90deg, transparent, #CBA465, #FFC300, #CBA465, transparent)" }}
-                initial={{ scaleX: 0 }}
-                animate={{ scaleX: 1 }}
-                transition={{ duration: 0.6, delay: 0.3 }}
-              />
-
-              {/* Close button */}
-              <div className="flex justify-end p-6 pb-2">
+              {/* Header row with logo + close */}
+              <div className="flex items-center justify-between px-6 h-[74px]">
+                <Image
+                  src={logoSrc}
+                  alt="Dr. Cindy"
+                  width={120}
+                  height={48}
+                  className="h-[40px] w-auto object-contain"
+                />
                 <motion.button
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-white/70 hover:text-[#FFC300] transition-colors p-1"
-                  initial={{ opacity: 0, rotate: -90 }}
-                  animate={{ opacity: 1, rotate: 0 }}
-                  transition={{ duration: 0.4, delay: 0.2 }}
+                  className="text-white/80 hover:text-[#FFC300] transition-colors p-2 -mr-2"
                   whileTap={{ scale: 0.9 }}
                 >
-                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </motion.button>
               </div>
 
-              {/* Navigation links */}
-              <nav className="flex flex-col px-8 pt-2 flex-1">
-                {navLinks.map((link, i) => (
-                  <motion.div
-                    key={link.label}
-                    initial={{ opacity: 0, x: 40 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    exit={{ opacity: 0, x: 40 }}
-                    transition={{ duration: 0.4, delay: 0.15 + i * 0.06, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <Link
-                      href={link.href}
-                      className="text-white/90 hover:text-[#FFC300] text-[20px] font-[var(--font-montserrat)] font-light tracking-wide transition-all duration-300 py-4 block border-b border-white/5 relative group"
-                      onClick={() => setMobileMenuOpen(false)}
+              {/* Nav links - compact 2-column grid */}
+              <nav className="px-6 pb-2">
+                <div className="grid grid-cols-2 gap-x-4 gap-y-0">
+                  {navLinks.map((link, i) => (
+                    <motion.div
+                      key={link.label}
+                      initial={{ opacity: 0, y: 12 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: 0.08 + i * 0.04 }}
                     >
-                      <span className="relative inline-flex items-center gap-3">
-                        {/* Gold dot indicator */}
-                        <span className="w-[6px] h-[6px] rounded-full bg-[#FFC300] opacity-0 scale-0 group-hover:opacity-100 group-hover:scale-100 transition-all duration-300" />
-                        {link.label}
-                      </span>
-                    </Link>
-                  </motion.div>
-                ))}
-
-                {/* CTA */}
-                <motion.div
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.5, delay: 0.15 + navLinks.length * 0.06 }}
-                  className="mt-8"
-                >
-                  <Link
-                    href={ctaHref}
-                    className="inline-flex items-center justify-center gap-3 w-full bg-[#FFC300] text-black font-semibold text-[16px] font-[var(--font-montserrat)] uppercase tracking-wider px-6 py-4 transition-all duration-300 hover:brightness-110"
-                    onClick={() => setMobileMenuOpen(false)}
-                  >
-                    {ctaLabel}
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </Link>
-                </motion.div>
+                      <Link
+                        href={link.href}
+                        className="text-white/85 hover:text-[#FFC300] text-[15px] font-[var(--font-montserrat)] font-normal tracking-wide transition-colors duration-200 py-3 block relative group"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        <span className="flex items-center gap-2">
+                          <span className="w-1 h-1 rounded-full bg-[#CBA465]/40 group-hover:bg-[#FFC300] transition-colors" />
+                          {link.label}
+                        </span>
+                      </Link>
+                    </motion.div>
+                  ))}
+                </div>
               </nav>
 
-              {/* Social icons at bottom */}
+              {/* Bottom bar: CTA + socials */}
               <motion.div
-                className="flex items-center justify-center gap-6 px-8 py-8 border-t border-white/5 mt-auto"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
+                className="flex items-center justify-between px-6 py-4 border-t border-white/[0.06]"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.3, delay: 0.25 }}
               >
-                {socialLinks.map((social, i) => (
-                  <motion.div
-                    key={social.label}
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.3, delay: 0.55 + i * 0.05, ease: [0.22, 1, 0.36, 1] }}
-                  >
-                    <SocialIcon social={social} size="w-5 h-5" />
-                  </motion.div>
-                ))}
-              </motion.div>
+                <Link
+                  href={ctaHref}
+                  className="inline-flex items-center gap-2 bg-[#FFC300] text-black font-semibold text-[13px] font-[var(--font-montserrat)] uppercase tracking-wider px-5 py-2.5 rounded-sm transition-all duration-200 hover:brightness-110"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {ctaLabel}
+                  <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                  </svg>
+                </Link>
 
-              {/* Decorative gold swirl */}
-              <div className="absolute bottom-0 right-0 w-[200px] h-[200px] opacity-[0.04] pointer-events-none">
-                <Image
-                  src="/images/gold-swirl-1.png"
-                  alt=""
-                  fill
-                  className="object-contain"
-                  aria-hidden="true"
-                />
-              </div>
+                <div className="flex items-center gap-3">
+                  {socialLinks.map((social) => (
+                    <a
+                      key={social.label}
+                      href={social.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-white/40 hover:text-[#FFC300] transition-colors [&_svg]:w-4 [&_svg]:h-4"
+                      aria-label={social.label}
+                    >
+                      {social.icon}
+                    </a>
+                  ))}
+                </div>
+              </motion.div>
             </motion.div>
           </>
         )}

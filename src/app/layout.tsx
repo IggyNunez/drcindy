@@ -36,6 +36,10 @@ export const metadata: Metadata = {
   title: "Dr. Cindy McGovern | First Lady of Sales",
   description:
     "Sales is a Life Skill, Not a Business Skill. Dr. Cindy McGovern helps you master the art of selling yourself.",
+  icons: {
+    icon: "/icon.svg",
+    apple: "/icon.svg",
+  },
 };
 
 export default function RootLayout({
