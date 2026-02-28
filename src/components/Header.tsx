@@ -359,7 +359,7 @@ export default function Header({ data }: HeaderProps) {
         </motion.button>
       </div>
 
-      {/* Mobile Menu - Compact modern overlay */}
+      {/* Mobile Menu - Right slide drawer */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <>
@@ -368,75 +368,109 @@ export default function Header({ data }: HeaderProps) {
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
-              transition={{ duration: 0.3 }}
-              className="fixed inset-0 bg-black/70 backdrop-blur-md z-40 lg:hidden"
+              transition={{ duration: 0.35 }}
+              className="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 lg:hidden"
               onClick={() => setMobileMenuOpen(false)}
             />
 
-            {/* Compact slide-down panel */}
+            {/* Drawer panel from right */}
             <motion.div
-              initial={{ y: "-100%", opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: "-100%", opacity: 0 }}
-              transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed top-0 left-0 right-0 bg-[#0a0a0a]/95 backdrop-blur-xl z-50 lg:hidden overflow-hidden"
-              style={{ borderBottom: "2px solid rgba(203, 164, 101, 0.3)" }}
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
+              transition={{ duration: 0.45, ease: [0.32, 0.72, 0, 1] }}
+              className="fixed top-0 right-0 bottom-0 w-[300px] max-w-[85vw] bg-[#0B0B0B] z-50 lg:hidden flex flex-col"
+              style={{ boxShadow: "-12px 0 40px rgba(0,0,0,0.6)" }}
             >
-              {/* Header row with logo + close */}
-              <div className="flex items-center justify-between px-6 h-[74px]">
+              {/* Gold accent line on left edge */}
+              <motion.div
+                className="absolute top-0 left-0 w-[2px] h-full"
+                style={{ background: "linear-gradient(180deg, #FFC300 0%, #CBA465 40%, transparent 100%)" }}
+                initial={{ scaleY: 0, originY: 0 }}
+                animate={{ scaleY: 1 }}
+                transition={{ duration: 0.6, delay: 0.2, ease: [0.22, 1, 0.36, 1] }}
+              />
+
+              {/* Header: close button */}
+              <div className="flex items-center justify-between px-6 h-[74px] flex-shrink-0">
                 <Image
                   src={logoSrc}
                   alt="Dr. Cindy"
-                  width={120}
-                  height={48}
-                  className="h-[40px] w-auto object-contain"
+                  width={100}
+                  height={40}
+                  className="h-[34px] w-auto object-contain opacity-80"
                 />
                 <motion.button
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-white/80 hover:text-[#FFC300] transition-colors p-2 -mr-2"
-                  whileTap={{ scale: 0.9 }}
+                  className="w-9 h-9 rounded-full bg-white/[0.06] flex items-center justify-center text-white/60 hover:text-[#FFC300] hover:bg-white/[0.1] transition-all"
+                  whileTap={{ scale: 0.85 }}
                 >
-                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </motion.button>
               </div>
 
-              {/* Nav links - compact 2-column grid */}
-              <nav className="px-6 pb-2">
-                <div className="grid grid-cols-2 gap-x-4 gap-y-0">
+              {/* Divider */}
+              <div className="mx-6 h-px bg-white/[0.06]" />
+
+              {/* Nav links */}
+              <nav className="flex-1 overflow-y-auto px-6 py-4">
+                <div className="flex flex-col gap-0.5">
                   {navLinks.map((link, i) => (
                     <motion.div
                       key={link.label}
-                      initial={{ opacity: 0, y: 12 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.3, delay: 0.08 + i * 0.04 }}
+                      initial={{ opacity: 0, x: 24 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.35, delay: 0.12 + i * 0.04, ease: [0.22, 1, 0.36, 1] }}
                     >
                       <Link
                         href={link.href}
-                        className="text-white/85 hover:text-[#FFC300] text-[15px] font-[var(--font-montserrat)] font-normal tracking-wide transition-colors duration-200 py-3 block relative group"
+                        className="flex items-center gap-3 py-[9px] group"
                         onClick={() => setMobileMenuOpen(false)}
                       >
-                        <span className="flex items-center gap-2">
-                          <span className="w-1 h-1 rounded-full bg-[#CBA465]/40 group-hover:bg-[#FFC300] transition-colors" />
+                        <span className="w-1 h-1 rounded-full bg-[#CBA465]/30 group-hover:bg-[#FFC300] group-hover:shadow-[0_0_6px_rgba(255,195,0,0.4)] transition-all duration-300 flex-shrink-0" />
+                        <span className="text-[15px] text-white/80 group-hover:text-[#FFC300] font-[var(--font-montserrat)] font-normal tracking-wide transition-colors duration-300 whitespace-nowrap">
                           {link.label}
                         </span>
                       </Link>
+
+                      {/* Nested children */}
+                      {link.hasDropdown && link.children?.map((child, ci) => (
+                        <motion.div
+                          key={child.label}
+                          initial={{ opacity: 0, x: 24 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          transition={{ duration: 0.35, delay: 0.14 + (i + ci + 1) * 0.04, ease: [0.22, 1, 0.36, 1] }}
+                        >
+                          <Link
+                            href={child.href}
+                            className="flex items-center gap-3 py-[8px] pl-4 group"
+                            onClick={() => setMobileMenuOpen(false)}
+                          >
+                            <span className="w-[3px] h-[3px] rounded-full bg-white/15 group-hover:bg-[#CBA465] transition-colors duration-300 flex-shrink-0" />
+                            <span className="text-[13px] text-white/50 group-hover:text-white/90 font-[var(--font-montserrat)] font-normal tracking-wide transition-colors duration-300 whitespace-nowrap">
+                              {child.label}
+                            </span>
+                          </Link>
+                        </motion.div>
+                      ))}
                     </motion.div>
                   ))}
                 </div>
               </nav>
 
-              {/* Bottom bar: CTA + socials */}
+              {/* Bottom section: CTA + socials */}
               <motion.div
-                className="flex items-center justify-between px-6 py-4 border-t border-white/[0.06]"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3, delay: 0.25 }}
+                className="flex-shrink-0 px-6 pb-6 pt-4 border-t border-white/[0.06]"
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, delay: 0.35 }}
               >
+                {/* CTA Button */}
                 <Link
                   href={ctaHref}
-                  className="inline-flex items-center gap-2 bg-[#FFC300] text-black font-semibold text-[13px] font-[var(--font-montserrat)] uppercase tracking-wider px-5 py-2.5 rounded-sm transition-all duration-200 hover:brightness-110"
+                  className="flex items-center justify-center gap-2 w-full bg-gradient-to-r from-[#CBA465] to-[#FFC300] text-black font-semibold text-[13px] font-[var(--font-montserrat)] uppercase tracking-wider px-5 py-3 rounded-lg transition-all duration-200 hover:shadow-[0_4px_20px_rgba(203,164,101,0.3)] whitespace-nowrap"
                   onClick={() => setMobileMenuOpen(false)}
                 >
                   {ctaLabel}
@@ -445,18 +479,22 @@ export default function Header({ data }: HeaderProps) {
                   </svg>
                 </Link>
 
-                <div className="flex items-center gap-3">
-                  {socialLinks.map((social) => (
-                    <a
+                {/* Social row */}
+                <div className="flex items-center justify-center gap-4 mt-5">
+                  {socialLinks.map((social, i) => (
+                    <motion.a
                       key={social.label}
                       href={social.href}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="text-white/40 hover:text-[#FFC300] transition-colors [&_svg]:w-4 [&_svg]:h-4"
+                      className="text-white/30 hover:text-[#FFC300] transition-colors duration-300 [&_svg]:w-[18px] [&_svg]:h-[18px]"
                       aria-label={social.label}
+                      initial={{ opacity: 0, y: 8 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.3, delay: 0.4 + i * 0.05 }}
                     >
                       {social.icon}
-                    </a>
+                    </motion.a>
                   ))}
                 </div>
               </motion.div>
